@@ -12,25 +12,25 @@ WITH transactions AS (
 	SELECT  financialyear
 	,       financialperiod
 	,       PARSE_DATE('%Y%m',cast(concat(financialyear, financialperiod) as string)) as year_month
-	,		"{{a['name']}}" as administration
+	,	"{{a['name']}}" as administration
 	,       CAST(ftl.glaccountcode AS INT64) AS glaccountcode
 	,       ftl.glaccountdescription
 	,       ftl.division
 	,       accountcode
 	,       accountname
 	,       invoicenumber
-	, 		duedate
-    ,       date AS order_date
-	,		ftl.description
-    ,       itemcode
-    ,       itemdescription
-    ,       quantity
+	, 	duedate
+    	,       date AS order_date
+	,	ftl.description
+    	,       itemcode
+    	,       itemdescription
+    	,       quantity
 	,       journalcode
 	,       journaldescription
 	,       amountdc * -1 as amountdc
 	,       amountfc * -1 as amountfc
 	,       amountvatbasefc * -1 as amountvatbasefc
-    ,       amountvatfc * -1 as amountvatfc
+    	,       amountvatfc * -1 as amountvatfc
 	, ROW_NUMBER() OVER (PARTITION BY ftl.id ORDER BY ftl.dataddo_extraction_timestamp DESC) AS dup_rank
 	FROM {{a['source']}} ftl
 	WHERE date(ftl.dataddo_extraction_timestamp) = current_date() 
